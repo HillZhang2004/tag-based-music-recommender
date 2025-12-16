@@ -25,7 +25,7 @@ We used an AI assistant for a few specific parts of this script:
         X_dev, X_test, y_dev, y_test = train_test_split(X_temp, y_temp, test_size=0.5)
     gives us 60/20/20 overall when we stratify on y.
   - Finally, we asked for a quick sanity check on saving models with joblib.
-    We already knew joblib.dump(model, "tag_model.joblib") from past labs; the
+    We already knew joblib.dump(model, "artifacts/tag_model.joblib") from past labs; the
     AI mostly helped us make sure we were saving both the final LogisticRegression
     model and the fitted CountVectorizer so that downstream scripts could load
     them consistently.
@@ -38,7 +38,7 @@ work with train_test_split) and polish the comments and print statements so the
 code is easier to read.
 
 Summary:
-This script trains a logistic regression model on tags from api_labeled_tracks.csv
+This script trains a logistic regression model on tags from data/api_labeled_tracks.csv
 using a CountVectorizer with a custom tokenizer. It:
   1. Loads and cleans the API-labeled dataset (ensuring non-empty tags and labels).
   2. Builds a CountVectorizer over tags using parse_tag_string and creates a
@@ -48,11 +48,11 @@ using a CountVectorizer with a custom tokenizer. It:
      one based on F1 on the dev set.
   5. Evaluates the best model on the held-out test set.
   6. Refits the final model on the full dataset and saves:
-       - tag_model.joblib
-       - tag_vectorizer.joblib
+       - artifacts/tag_model.joblib
+       - artifacts/tag_vectorizer.joblib
 
 Usage:
-  - Make sure api_labeled_tracks.csv is in the current folder.
+  - Make sure data/api_labeled_tracks.csv is in the current folder.
   - Then run:
         python train_from_api_dataset.py
 """
@@ -93,7 +93,7 @@ def parse_tag_string(tag_str):
 
 def main():
     print("=== Step 1: load API-labeled dataset ===")
-    df = pd.read_csv("api_labeled_tracks.csv")
+    df = pd.read_csv("data/api_labeled_tracks.csv")
     print(f"Raw shape: {df.shape}")
 
     # Keep only rows that have tags and labels
@@ -173,9 +173,9 @@ def main():
     )
     final_model.fit(X, y)
 
-    joblib.dump(final_model, "tag_model.joblib")
-    joblib.dump(vectorizer, "tag_vectorizer.joblib")
-    print("Saved tag_model.joblib and tag_vectorizer.joblib")
+    joblib.dump(final_model, "artifacts/tag_model.joblib")
+    joblib.dump(vectorizer, "artifacts/tag_vectorizer.joblib")
+    print("Saved artifacts/tag_model.joblib and artifacts/tag_vectorizer.joblib")
 
 
 if __name__ == "__main__":

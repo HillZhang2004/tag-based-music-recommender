@@ -26,7 +26,7 @@ We used an AI assistant for a few concrete tasks:
     what happens if no tags are found).
   - After we retrained the CountVectorizer with a custom tokenizer
     parse_tag_string in train_from_api_dataset.py, we ran into a joblib
-    error when loading tag_vectorizer.joblib here. The AI explained that
+    error when loading artifacts/tag_vectorizer.joblib here. The AI explained that
     the vectorizer pickle was referencing __main__.parse_tag_string from
     the training script, so this file also needs a matching
     parse_tag_string definition so unpickling works.
@@ -152,7 +152,7 @@ def main():
     )
     parser.add_argument(
         "--csv",
-        default="top_tracks_lastfm.csv",
+        default="data/top_tracks_lastfm.csv",
         help="CSV with candidate tracks (must have a 'tags' column).",
     )
     parser.add_argument(
@@ -201,8 +201,8 @@ def main():
 
     # 4) Load trained model + vectorizer
     print("Loading trained model and vectorizer ...")
-    clf = joblib.load("tag_model.joblib")
-    vectorizer = joblib.load("tag_vectorizer.joblib")
+    clf = joblib.load("artifacts/tag_model.joblib")
+    vectorizer = joblib.load("artifacts/tag_vectorizer.joblib")
 
     # 5) Vectorize tags and predict probabilities P(like = 1 | tags)
     print("Scoring sampled songs with the model ...")

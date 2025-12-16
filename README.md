@@ -5,21 +5,21 @@ Last updated: **2025-12-13**
 
 A small tag-based music recommender that models my Spotify taste using metadata from Spotify + Last.fm. The pipeline builds a labeled dataset of tracks, represents each track with bag-of-tags features, and trains a logistic regression model to predict the probability that a track is a “like.”
 
-A short writeup is included in **`Project_Report.pdf`** (2 pages + appendix).  
+A short writeup is included in **`docs/Project_Report.pdf`** (2 pages + appendix).  
 Slides: https://docs.google.com/presentation/d/1LXsRlMVp0Dyil7INCxJqCdAjInD7x64NV65LvkJY0xQ/edit?usp=sharing
 ---
 
 ## Repo layout
-- `train_from_api_dataset.py` — main training script. Loads `api_labeled_tracks.csv`, builds tag features with `CountVectorizer`, runs a 60/20/20 train–dev–test split, tunes `C`, evaluates, then refits and saves `tag_model.joblib` and `tag_vectorizer.joblib`.
+- `train_from_api_dataset.py` — main training script. Loads `data/api_labeled_tracks.csv`, builds tag features with `CountVectorizer`, runs a 60/20/20 train–dev–test split, tunes `C`, evaluates, then refits and saves `artifacts/tag_model.joblib` and `artifacts/tag_vectorizer.joblib`.
 - `preprocess.py` — helper functions for loading the labeled dataset and converting the `tags` column into bag-of-tags features.
 - `recommend_from_csv.py` — CLI script that loads the saved model + vectorizer, scores a CSV of candidate tracks, and prints/saves a ranked list.
 - `sample_and_score.py` — samples tracks from a CSV (biased toward popular tags), scores them, and writes an output CSV with scores.
 - `interactive_demo.py` — terminal demo: input a comma-separated tag list (e.g. `soul,rnb,bedroom pop`) and return a predicted like probability.
-- `streamlit_app.py` — Streamlit UI that ranks tracks from `top_tracks_lastfm.csv`.
+- `streamlit_app.py` — Streamlit UI that ranks tracks from `data/top_tracks_lastfm.csv`.
 - `app.py` — small Streamlit app: type arbitrary tags and return a single predicted like probability.
-- `api_labeled_tracks.csv` — labeled dataset (529 rows: 329 positives, 200 negatives).
-- `top_tracks_lastfm.csv` — candidate tracks used for ranking demos.
-- `test_api.py` — optional script to rebuild `api_labeled_tracks.csv` from scratch using Spotify + Last.fm APIs (requires keys in `.env`).
+- `data/api_labeled_tracks.csv` — labeled dataset (529 rows: 329 positives, 200 negatives).
+- `data/top_tracks_lastfm.csv` — candidate tracks used for ranking demos.
+- `test_api.py` — optional script to rebuild `data/api_labeled_tracks.csv` from scratch using Spotify + Last.fm APIs (requires keys in `.env`).
 
 ---
 
@@ -35,12 +35,12 @@ pip install -r requirements.txt
 If there is no requirements.txt, typical deps are:
 pandas numpy scikit-learn joblib streamlit spotipy python-dotenv requests
 
-API keys are not required for training + demos because api_labeled_tracks.csv and top_tracks_lastfm.csv are already included.
+API keys are not required for training + demos because data/api_labeled_tracks.csv and data/top_tracks_lastfm.csv are already included.
 
 How to run
 1) Train the model from the labeled CSV
 
-Retrains logistic regression on api_labeled_tracks.csv and overwrites tag_model.joblib and tag_vectorizer.joblib.
+Retrains logistic regression on data/api_labeled_tracks.csv and overwrites artifacts/tag_model.joblib and artifacts/tag_vectorizer.joblib.
 
 source .venv/bin/activate
 python train_from_api_dataset.py
@@ -52,13 +52,13 @@ Expected output includes train/dev/test sizes, dev-set scores across C, and a fi
 
 Ranks tracks by predicted like probability. The input CSV should contain track_name, artist_name, and tags.
 
-python recommend_from_csv.py --csv top_tracks_lastfm.csv --topn 20
+python recommend_from_csv.py --csv data/top_tracks_lastfm.csv --topn 20
 
 
 This prints top recommendations and writes: recommendations_from_top_tracks_lastfm.csv
 
 3) Sample-and-score sanity check
-python sample_and_score.py --csv top_tracks_lastfm.csv --n_samples 50 --out sampled_songs_with_scores.csv
+python sample_and_score.py --csv data/top_tracks_lastfm.csv --n_samples 50 --out sampled_songs_with_scores.csv
 
 4) Interactive demos
 

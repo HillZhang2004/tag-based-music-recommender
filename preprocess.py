@@ -99,7 +99,7 @@ def _split_tags(tag_str):
     return parts
 
 
-def load_labeled_dataset(user_csv="api_labeled_tracks.csv", global_csv=None):
+def load_labeled_dataset(user_csv="data/api_labeled_tracks.csv", global_csv=None):
     """
     Load the labeled dataset from user_csv.
 
@@ -155,8 +155,8 @@ def build_tag_counts_from_dfs(df_list):
 def build_tag_dictionary_from_dfs(
     df_list,
     max_tags=2500,
-    dict_path="tag_dictionary.csv",
-    counts_path="tag_counts.csv",
+    dict_path="data/derived/tag_dictionary.csv",
+    counts_path="data/derived/tag_counts.csv",
 ):
     """
     Build a tag dictionary (up to max_tags tags) based on tag frequencies
@@ -178,7 +178,7 @@ def build_tag_dictionary_from_dfs(
     return top_tags
 
 
-def load_tag_dictionary(dict_path="tag_dictionary.csv"):
+def load_tag_dictionary(dict_path="data/derived/tag_dictionary.csv"):
     """
     Load tag dictionary from CSV and return it as a list of tag strings.
     """

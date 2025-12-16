@@ -38,13 +38,13 @@ awkward.
 
 Summary:
 This interactive script:
-  1. Loads tag_model.joblib and tag_vectorizer.joblib.
+  1. Loads artifacts/tag_model.joblib and artifacts/tag_vectorizer.joblib.
   2. Repeatedly prompts the user for a comma-separated tag list.
   3. Converts that tag string into features with build_tag_features_for_unlabeled.
   4. Prints the predicted like probability for each input until the user exits.
 
 Usage:
-  - Make sure tag_model.joblib, tag_vectorizer.joblib, and preprocess.py are
+  - Make sure artifacts/tag_model.joblib, artifacts/tag_vectorizer.joblib, and preprocess.py are
     in the same folder.
   - From the project directory, run:
         python interactive_demo.py
@@ -55,8 +55,8 @@ import pandas as pd
 
 from preprocess import build_tag_features_for_unlabeled
 
-MODEL_PATH = "tag_model.joblib"
-VECTORIZER_PATH = "tag_vectorizer.joblib"
+MODEL_PATH = "artifacts/tag_model.joblib"
+VECTORIZER_PATH = "artifacts/tag_vectorizer.joblib"
 
 
 def parse_tag_string(tag_str):

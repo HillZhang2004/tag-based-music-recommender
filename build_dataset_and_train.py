@@ -28,19 +28,19 @@ polish the comments so the code is easier to read.
 Summary:
 This script trains a logistic regression model on Last.fm tag features for my
 Spotify recommendation project. It:
-  1. Checks that api_labeled_tracks.csv exists.
+  1. Checks that data/api_labeled_tracks.csv exists.
   2. Loads the labeled dataset (positives + negatives built in test_api.py).
   3. Builds a tag dictionary and tag counts.
   4. Builds a tag feature matrix from the "tags" column.
   5. Splits into train/dev/test and tunes C using F1 on the dev set.
   6. Trains a final model, prints top positive/negative tags, and saves:
-       - tag_model.joblib
-       - tag_vectorizer.joblib
+       - artifacts/tag_model.joblib
+       - artifacts/tag_vectorizer.joblib
        - labeled_dataset.csv
        - tag_features.csv
 
 Usage:
-  - Make sure api_labeled_tracks.csv is in the current folder
+  - Make sure data/api_labeled_tracks.csv is in the current folder
     (run test_api.py first to build it).
   - Then run:
         python build_dataset_and_train.py
@@ -49,7 +49,7 @@ Usage:
 # Train a logistic regression model on tag features.
 #
 # Steps:
-# 1. Check that api_labeled_tracks.csv exists
+# 1. Check that data/api_labeled_tracks.csv exists
 # 2. Load the labeled dataset (positives + negatives from test_api)
 # 3. Build a tag dictionary + tag counts
 # 4. Build the tag feature matrix
@@ -77,14 +77,14 @@ def main():
 
     # ---------- STEP 1: sanity check CSV ----------
     print("\n=== Step 1: Check training CSV exists ===")
-    user_csv = "api_labeled_tracks.csv"
+    user_csv = "data/api_labeled_tracks.csv"
     cwd = os.getcwd()
     print("Current working directory:", cwd)
     print("Files in folder:", os.listdir(cwd))
     print(f"Checking {user_csv} ... exists:", os.path.exists(user_csv))
 
     if not os.path.exists(user_csv):
-        print("ERROR: api_labeled_tracks.csv not found. Run test_api.py first.")
+        print("ERROR: data/api_labeled_tracks.csv not found. Run test_api.py first.")
         return
 
     # ---------- STEP 2: load + inspect labeled dataset ----------
@@ -103,11 +103,11 @@ def main():
     tag_dict = build_tag_dictionary_from_dfs(
         [labeled_df],
         max_tags=2500,
-        dict_path="tag_dictionary.csv",
-        counts_path="tag_counts.csv",
+        dict_path="data/derived/tag_dictionary.csv",
+        counts_path="data/derived/tag_counts.csv",
     )
-    print(f"Tag dictionary size: {len(tag_dict)} tags (saved to tag_dictionary.csv)")
-    print("Tag counts saved to tag_counts.csv")
+    print(f"Tag dictionary size: {len(tag_dict)} tags (saved to data/derived/tag_dictionary.csv)")
+    print("Tag counts saved to data/derived/tag_counts.csv")
 
     # ---------- STEP 4: build tag feature matrix ----------
     print("\n=== Step 4: Build tag features from 'tags' column ===")
@@ -206,9 +206,9 @@ def main():
         print(f"{feature_names[idx]:20s}  coef = {coefs[idx]: .4f}")
 
     print("\n=== Step 7: Save artifacts ===")
-    joblib.dump(clf, "tag_model.joblib")
-    joblib.dump(vectorizer, "tag_vectorizer.joblib")
-    print("Saved: tag_model.joblib, tag_vectorizer.joblib")
+    joblib.dump(clf, "artifacts/tag_model.joblib")
+    joblib.dump(vectorizer, "artifacts/tag_vectorizer.joblib")
+    print("Saved: artifacts/tag_model.joblib, artifacts/tag_vectorizer.joblib")
 
     labeled_df.to_csv("labeled_dataset.csv", index=False)
     features_df.to_csv("tag_features.csv", index=False)

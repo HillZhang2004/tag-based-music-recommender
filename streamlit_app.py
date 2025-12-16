@@ -12,7 +12,7 @@ the ML model itself), Hill took the lead on this part and used GPT mostly as
 a tutorial and style checker:
 
 - Hill first wrote down what the app should do: load the saved logistic
-  regression model and vectorizer, load top_tracks_lastfm.csv, precompute
+  regression model and vectorizer, load data/top_tracks_lastfm.csv, precompute
   like-probabilities, and then show a simple page with a slider for "how many
   recommendations to show" and a table of results.
 - We then asked the AI how to structure a minimal Streamlit app and what the
@@ -35,13 +35,13 @@ agreed on this usage.
 
 Summary:
 This Streamlit app:
-  1. Loads tag_model.joblib, tag_vectorizer.joblib, and top_tracks_lastfm.csv.
+  1. Loads artifacts/tag_model.joblib, artifacts/tag_vectorizer.joblib, and data/top_tracks_lastfm.csv.
   2. Uses the saved vectorizer and model to compute like_prob for each track.
   3. Lets the user pick how many recommendations to display with a slider.
   4. On button click, shows the top-N tracks sorted by like_prob in a table.
 
 Usage:
-  - Make sure tag_model.joblib, tag_vectorizer.joblib, and top_tracks_lastfm.csv
+  - Make sure artifacts/tag_model.joblib, artifacts/tag_vectorizer.joblib, and data/top_tracks_lastfm.csv
     are in the same folder as this file.
   - From the project directory, run:
         streamlit run streamlit_app.py
@@ -58,7 +58,7 @@ def parse_tag_string(tag_str: str) -> str:
     'pop, female vocalists, indie pop'
     into 'pop female_vocalists indie_pop'.
 
-    Must exist so joblib can unpickle tag_vectorizer.joblib,
+    Must exist so joblib can unpickle artifacts/tag_vectorizer.joblib,
     which references this function.
     """
     if not isinstance(tag_str, str):
@@ -76,10 +76,10 @@ def parse_tag_string(tag_str: str) -> str:
 @st.cache_resource
 def load_artifacts():
     """Load model, vectorizer, and candidate tracks; precompute scores."""
-    model = joblib.load("tag_model.joblib")
-    vectorizer = joblib.load("tag_vectorizer.joblib")
+    model = joblib.load("artifacts/tag_model.joblib")
+    vectorizer = joblib.load("artifacts/tag_vectorizer.joblib")
 
-    df = pd.read_csv("top_tracks_lastfm.csv")
+    df = pd.read_csv("data/top_tracks_lastfm.csv")
     df["tags"] = df["tags"].fillna("").astype(str)
 
     X = vectorizer.transform(df["tags"])
@@ -99,7 +99,7 @@ This app uses a logistic regression model trained on my own listening history.
 It takes Last.fm-style tags (e.g. `pop,female vocalists,indie pop`) and
 predicts how likely I am to like a track with those tags.
 
-For this demo, we rank tracks from `top_tracks_lastfm.csv` by their
+For this demo, we rank tracks from `data/top_tracks_lastfm.csv` by their
 predicted probability of being a "like".
 """
     )

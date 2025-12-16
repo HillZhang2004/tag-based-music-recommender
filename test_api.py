@@ -47,14 +47,14 @@ This script:
      positive set or overlap in (name, artist).
   5. Combines positives and negatives into a single DataFrame with columns
      [track_id, track_name, artist_name, tags, label, weight] and saves
-     api_labeled_tracks.csv, which is used by our training scripts.
+     data/api_labeled_tracks.csv, which is used by our training scripts.
 
 Usage (high level):
   - Make sure your .env file has valid Spotify and Last.fm API keys.
   - Activate the virtual environment.
   - Run:
         python test_api.py
-  - The script will talk to both APIs and write api_labeled_tracks.csv in
+  - The script will talk to both APIs and write data/api_labeled_tracks.csv in
     the current folder.
 """
 
@@ -367,9 +367,9 @@ for song in negative_songs:
     )
 
 df = pd.DataFrame(rows)
-df.to_csv("api_labeled_tracks.csv", index=False)
+df.to_csv("data/api_labeled_tracks.csv", index=False)
 
-print("Saved training dataset to api_labeled_tracks.csv")
+print("Saved training dataset to data/api_labeled_tracks.csv")
 print("Shape:", df.shape)
 print("Label counts:")
 print(df["label"].value_counts())

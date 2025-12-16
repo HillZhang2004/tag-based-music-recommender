@@ -28,13 +28,13 @@ the correct shape/indexing for predict_proba.
 
 Summary:
 This app:
-  1. Loads tag_model.joblib and tag_vectorizer.joblib.
+  1. Loads artifacts/tag_model.joblib and artifacts/tag_vectorizer.joblib.
   2. Lets the user type in a comma-separated tag string.
   3. Cleans the tags, builds features with build_tag_features_for_unlabeled,
      and prints the predicted like probability for that one input.
 
 Usage:
-  - Make sure tag_model.joblib, tag_vectorizer.joblib, and preprocess.py are in
+  - Make sure artifacts/tag_model.joblib, artifacts/tag_vectorizer.joblib, and preprocess.py are in
     the same folder.
   - From the project directory, run:
         streamlit run app.py
@@ -46,8 +46,8 @@ import joblib
 import pandas as pd
 from preprocess import build_tag_features_for_unlabeled
 
-clf = joblib.load("tag_model.joblib")
-vectorizer = joblib.load("tag_vectorizer.joblib")
+clf = joblib.load("artifacts/tag_model.joblib")
+vectorizer = joblib.load("artifacts/tag_vectorizer.joblib")
 
 st.title("Hill's Tag-Based Music Recommender")
 

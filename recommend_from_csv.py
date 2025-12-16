@@ -38,7 +38,7 @@ This script scores a CSV of candidate tracks using the trained tag model.
 It:
   1. Parses command-line arguments (--csv for the input file, --topn for how
      many recommendations to print).
-  2. Loads tag_model.joblib and tag_vectorizer.joblib.
+  2. Loads artifacts/tag_model.joblib and artifacts/tag_vectorizer.joblib.
   3. Loads candidate tracks from the CSV and checks that the required columns
      exist (track_name, artist_name, tags).
   4. Transforms the "tags" column with the saved vectorizer and calls
@@ -47,9 +47,9 @@ It:
      list to recommendations_from_<input_name>.csv.
 
 Usage:
-  - Make sure tag_model.joblib and tag_vectorizer.joblib are in the current folder.
+  - Make sure artifacts/tag_model.joblib and artifacts/tag_vectorizer.joblib are in the current folder.
   - Then run something like:
-        python recommend_from_csv.py --csv top_tracks_lastfm.csv --topn 20
+        python recommend_from_csv.py --csv data/top_tracks_lastfm.csv --topn 20
 """
 
 import argparse
@@ -103,7 +103,7 @@ def main():
     parser.add_argument(
         "--csv",
         required=True,
-        help="Path to CSV file with candidate tracks (e.g., top_tracks_lastfm.csv)",
+        help="Path to CSV file with candidate tracks (e.g., data/top_tracks_lastfm.csv)",
     )
     parser.add_argument(
         "--topn",
@@ -114,8 +114,8 @@ def main():
     args = parser.parse_args()
 
     print("=== Step 1: Load model and vectorizer ===")
-    model = joblib.load("tag_model.joblib")
-    vectorizer = joblib.load("tag_vectorizer.joblib")
+    model = joblib.load("artifacts/tag_model.joblib")
+    vectorizer = joblib.load("artifacts/tag_vectorizer.joblib")
 
     print(f"=== Step 2: Load candidate tracks from {args.csv} ===")
     df = load_candidates(args.csv)
