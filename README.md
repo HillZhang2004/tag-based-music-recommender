@@ -6,7 +6,7 @@ Last updated: **2025-12-13**
 A small tag-based music recommender that models my Spotify taste using metadata from Spotify + Last.fm. The pipeline builds a labeled dataset of tracks, represents each track with bag-of-tags features, and trains a logistic regression model to predict the probability that a track is a “like.”
 
 A short writeup is included in **`Project_Report.pdf`** (2 pages + appendix).  
-
+Slides: https://docs.google.com/presentation/d/1LXsRlMVp0Dyil7INCxJqCdAjInD7x64NV65LvkJY0xQ/edit?usp=sharing
 ---
 
 ## Repo layout
@@ -91,3 +91,4 @@ Model: logistic regression (liblinear), tuned over C ∈ {0.01, 0.1, 1.0, 10.0} 
 
 
 In the included split, the final tuned model reaches ~99% test accuracy; the dataset construction makes negatives intentionally far from positives in tag space, so this is an “easy” classification setting.
+
